@@ -1,7 +1,7 @@
 local module = {}
 
 module.SSID = {}
-module.SSID["NAME"] = "PASSWORD"
+module.SSID["{$SSID}"] = "{$password}"
 
 module.PORT = 80
 

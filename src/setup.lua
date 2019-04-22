@@ -22,26 +22,22 @@ local function waitForIP()
 end
 
 local function connectToNetwork(aps)
-  if aps then
-    for key, _ in pairs(aps) do
-      if config.SSID and config.SSID[key] then
-        wifi.setmode(wifi.STATION);
-        wifi.sta.config(key, config.SSID[key])
-        wifi.sta.connect()
-        print("Connecting to " .. key .. " ...")
+  wifi.setmode(wifi.STATION);
+  station_cfg={}
+  station_cfg.ssid="{$SSID}"
+  station_cfg.pwd="{$password}"
+  wifi.sta.setip({ip="{$IP}",netmask="255.255.255.0",gateway="192.168.x.1"})
+  wifi.sta.config(station_cfg)
+  wifi.sta.connect()
+  print("Connecting to " .. station_cfg.ssid .. " ...")
 
-        tmr.alarm(1, 2500, 1, waitForIP)
-      end
-    end
-  else
-    print("Error getting AP list")
-  end
+  tmr.alarm(1, 2500, 1, waitForIP)
 end
 
 function module.start()
   print("Configuring Wifi ...")
   wifi.setmode(wifi.STATION);
-  wifi.sta.getap(connectToNetwork)
+  connectToNetwork()
 end
 
 return module
